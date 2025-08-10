@@ -17,6 +17,7 @@
  */
 
 import express from "express";
+import cors from "cors";
 import { ErrorHandler, RedirectToPage } from "./middlewares";
 import { api } from "./api";
 
@@ -24,6 +25,7 @@ const app = express();
 const port = 1447;
 
 app.use(express.json());
+app.use(cors());
 app.use(RedirectToPage);
 app.use(api);
 api.use(ErrorHandler);
