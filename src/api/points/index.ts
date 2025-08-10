@@ -21,17 +21,18 @@ import { db } from "../../util/db";
 import { VerifyJson } from "../../middlewares";
 import { Point } from "../../util/models";
 import { PointCreate } from "../../util/schema";
+import { pointId } from "./:pointId";
 
 const route = "/points";
-export const api = Router();
+export const points = Router();
 
-api.get(route, async (_, res) => {
+points.get(route, async (_, res) => {
   const points: Point[] = await db.point.findMany();
   res.json(points);
 });
 
-api.post(route, VerifyJson);
-api.post(route, async (req, res) => {
+points.post(route, VerifyJson);
+points.post(route, async (req, res) => {
   const data = await PointCreate.validate(req.body); 
 
   await db.point.create({ data });
@@ -40,3 +41,5 @@ api.post(route, async (req, res) => {
     .status(204)
     .send();
 });
+
+points.use(route, pointId);

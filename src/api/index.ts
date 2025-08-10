@@ -17,12 +17,12 @@
  */
 
 import { Router } from "express";
-import { VerifyJson } from "../middlewares";
+import { points } from "./points";
 
 const route = "/api";
 export const api = Router();
 
-api.use(VerifyJson);
+api.use(route, points);
 
 api.get(route, (_, res) => {
   res.json({ status: "ok" });
