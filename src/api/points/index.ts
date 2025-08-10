@@ -18,7 +18,7 @@
 
 import { Router } from "express";
 import { db } from "../../util/db";
-import { VerifyJson } from "../../middlewares";
+import { VerifyJson, Authentication } from "../../middlewares";
 import { Point } from "../../util/models";
 import { PointCreate } from "../../util/schema";
 import { pointId } from "./:pointId";
@@ -33,9 +33,24 @@ points.get(route, async (_, res) => {
 });
 
 points.post(route, VerifyJson);
+points.post(route, Authentication);
 points.post(route, async (req, res) => {
-  const data = await PointCreate.validate(req.body); 
-  const point: Point = await db.point.create({ data });
+  const {
+    name,
+    latitude,
+    longitude,
+    description
+  } = await PointCreate.validate(req.body); 
+
+  const point: Point = await db.point.create({
+    data: {
+      name,
+      latitude,
+      longitude,
+      description,
+      createdBy: req.jwtData!.username
+    }
+  });
 
   res
     .status(204)

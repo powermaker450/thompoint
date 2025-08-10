@@ -19,3 +19,4 @@
 export * from "./PointCreate";
 export * from "./PointEdit";
 export * from "./PointId";
+export * from "./UserRegister";

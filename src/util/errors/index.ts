@@ -18,3 +18,8 @@
 
 export * from "./BodyNotJsonError";
 export * from "./ClientError";
+export * from "./IncorrectPasswordError";
+export * from "./InvalidTokenError";
+export * from "./NotOwnerError";
+export * from "./UsernameExistsError";
+export * from "./UserNotExistsError";

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+export * from "./Authentication";
 export * from "./ErrorHandler";
 export * from "./RedirectToPage";
 export * from "./VerifyJson";

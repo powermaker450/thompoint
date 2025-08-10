@@ -20,5 +20,6 @@ import { Point } from "./models";
 
 export interface ServerToClientEvents {
   NEW_POINT: (point: Point) => void;
+  REMOVE_POINT: (id: number) => void;
   READY: (points: Point[]) => void;
 }

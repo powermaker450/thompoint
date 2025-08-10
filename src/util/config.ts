@@ -20,5 +20,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PORT = Number(process.env.PORT);
+const { SECRET_KEY } = process.env;
 
-export { PORT };
+if (!SECRET_KEY || SECRET_KEY.length < 32) {
+  console.error("SECRET_KEY must be 32 characters or more in length.");
+  process.exit(1);
+}
+
+export { PORT, SECRET_KEY };

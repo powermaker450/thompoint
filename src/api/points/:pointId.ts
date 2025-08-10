@@ -20,6 +20,9 @@ import { Router } from "express";
 import { PointEdit, PointId } from "../../util/schema";
 import { db } from "../../util/db";
 import { Point } from "../../util/models";
+import { Authentication } from "../../middlewares";
+import { NotOwnerError } from "../../util/errors";
+import { io } from "../../main";
 
 const route = "/:pointId";
 export const pointId = Router();
@@ -31,9 +34,17 @@ pointId.get(route, async (req, res) => {
   res.json(point);
 });
 
+pointId.patch(route, Authentication);
 pointId.patch(route, async (req, res) => {
   const { pointId } = await PointId.validate(req.params);
   const data = await PointEdit.validate(req.body);
+  const point = await db.point.findFirstOrThrow({
+    where: { id: pointId }
+  });
+
+  if (req.jwtData!.username !== point.createdBy) {
+    throw new NotOwnerError();
+  }
 
   await db.point.update({
     where: { id: pointId },
@@ -45,8 +56,16 @@ pointId.patch(route, async (req, res) => {
     .send();
 });
 
+pointId.delete(route, Authentication);
 pointId.delete(route, async (req, res) => {
   const { pointId } = await PointId.validate(req.params);
+  const point = await db.point.findFirstOrThrow({
+    where: { id: pointId }
+  });
+
+  if (req.jwtData!.username !== point.createdBy) {
+    throw new NotOwnerError();
+  }
 
   await db.point.delete({
     where: { id: pointId }
@@ -55,4 +74,6 @@ pointId.delete(route, async (req, res) => {
   res
     .status(204)
     .send();
+
+  io.emit("REMOVE_POINT", pointId);
 });

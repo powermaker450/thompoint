@@ -16,13 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InferType, number, object, string } from "yup";
+import { Router } from "express";
+import { Authentication } from "../../middlewares";
 
-export const PointCreate = object({
-  latitude: number().required(),
-  longitude: number().required(),
-  name: string(),
-  description: string()
-});
+const route = "/logout";
+const logout = Router();
 
-export interface PointCreate extends InferType<typeof PointCreate> {};
+logout.post(route, Authentication);
+logout.post(route, async (req, res) => {});

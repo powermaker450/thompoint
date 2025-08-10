@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InferType, number, object, string } from "yup";
+import { Router } from "express";
+import register from "./register";
+import login from "./login";
 
-export const PointCreate = object({
-  latitude: number().required(),
-  longitude: number().required(),
-  name: string(),
-  description: string()
-});
+const route = "/auth";
+const auth = Router();
 
-export interface PointCreate extends InferType<typeof PointCreate> {};
+auth.use(route, login, register);
+
+export default auth;

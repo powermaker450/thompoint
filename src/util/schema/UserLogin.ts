@@ -16,13 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InferType, number, object, string } from "yup";
+import { UserRegister } from "./UserRegister";
 
-export const PointCreate = object({
-  latitude: number().required(),
-  longitude: number().required(),
-  name: string(),
-  description: string()
-});
+export const UserLogin = UserRegister;
 
-export interface PointCreate extends InferType<typeof PointCreate> {};
+export interface UserLogin extends UserRegister {};

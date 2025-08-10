@@ -17,6 +17,7 @@
  */
 
 import { Request, Response, NextFunction } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 export type MiddlewareFunction<T = void> = (
   req: Request,
@@ -24,10 +25,21 @@ export type MiddlewareFunction<T = void> = (
   next: NextFunction
 ) => T;
 
+export interface JwtData extends JwtPayload {
+  username: string;
+}
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT?: string;
+      SECRET_KEY: string;
+    }
+  }
+
+  namespace Express {
+    interface Request {
+      jwtData?: JwtData;
     }
   }
 }

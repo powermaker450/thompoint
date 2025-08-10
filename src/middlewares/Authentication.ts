@@ -16,13 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InferType, number, object, string } from "yup";
+import jwt from "jsonwebtoken";
+import { JwtData, MiddlewareFunction } from "../custom";
+import { InvalidTokenError } from "../util/errors";
+import { SECRET_KEY } from "../util";
 
-export const PointCreate = object({
-  latitude: number().required(),
-  longitude: number().required(),
-  name: string(),
-  description: string()
-});
+export const Authentication: MiddlewareFunction = async (req, _, next) => {
+  if (!req.headers.authorization) {
+    throw new InvalidTokenError(); 
+  }
 
-export interface PointCreate extends InferType<typeof PointCreate> {};
+  req.jwtData = jwt.verify(req.headers.authorization, SECRET_KEY) as JwtData;
+  next();
+};

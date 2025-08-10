@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import auth from "./auth";
 import { Router } from "express";
 import { points } from "./points";
 
 const route = "/api";
 export const api = Router();
 
-api.use(route, points);
+api.use(route, auth, points);
 
 api.get(route, (_, res) => {
   res.json({ status: "ok" });

@@ -16,13 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InferType, number, object, string } from "yup";
+import { ClientError } from "./ClientError";
 
-export const PointCreate = object({
-  latitude: number().required(),
-  longitude: number().required(),
-  name: string(),
-  description: string()
-});
+export class UserNotExistsError extends ClientError {
+  public name = "UserNotExistsError";
 
-export interface PointCreate extends InferType<typeof PointCreate> {};
+  public constructor() {
+    super("user not found");
+  }
+}
