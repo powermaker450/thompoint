@@ -19,11 +19,19 @@
 import jwt from "jsonwebtoken";
 import { JwtData, MiddlewareFunction } from "../custom";
 import { InvalidTokenError } from "../util/errors";
-import { SECRET_KEY } from "../util";
+import { db, SECRET_KEY } from "../util";
 
 export const Authentication: MiddlewareFunction = async (req, _, next) => {
   if (!req.headers.authorization) {
     throw new InvalidTokenError(); 
+  }
+
+  const invalidToken = await db.invalidToken.findFirst({
+    where: { token: req.headers.authorization }
+  });
+
+  if (invalidToken) {
+    throw new InvalidTokenError();
   }
 
   req.jwtData = jwt.verify(req.headers.authorization, SECRET_KEY) as JwtData;

@@ -19,10 +19,11 @@
 import { Router } from "express";
 import register from "./register";
 import login from "./login";
+import logout from "./logout";
 
 const route = "/auth";
 const auth = Router();
 
-auth.use(route, login, register);
+auth.use(route, login, logout, register);
 
 export default auth;

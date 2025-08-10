@@ -18,9 +18,22 @@
 
 import { Router } from "express";
 import { Authentication } from "../../middlewares";
+import { db } from "../../util";
 
 const route = "/logout";
 const logout = Router();
 
 logout.post(route, Authentication);
-logout.post(route, async (req, res) => {});
+logout.post(route, async (req, res) => {
+  await db.invalidToken.create({
+    data: {
+      token: req.headers.authorization!
+    }
+  });
+
+  res
+    .status(204)
+    .send();
+});
+
+export default logout;

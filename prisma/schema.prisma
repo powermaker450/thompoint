@@ -31,3 +31,7 @@ model Point {
 
   user User @relation(fields: [createdBy], references: [username])
 }
+
+model InvalidToken {
+  token String @id @unique
+}
