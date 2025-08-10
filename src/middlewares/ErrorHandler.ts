@@ -18,6 +18,7 @@
 
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../util/errors";
+import { ValidationError } from "yup";
 
 export function ErrorHandler(
   err: Error,
@@ -29,10 +30,14 @@ export function ErrorHandler(
     return next();
   }
 
-  if (err instanceof ClientError) {
+  if (err instanceof ClientError || err instanceof ValidationError) {
     res
       .status(400)
       .json({ name: err.name, message: err.message });
+  } else if (err.name === "PrismaClientKnownRequestError") {
+    res
+      .status(404)
+      .json({ name: "NotFoundError", message: "not found" });
   } else {
     res
       .status(500)
