@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,22 +11,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  username String
-  slackId String
-  points Point[]
-}
-
 model Point {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
-  createdBy Int
+  createdBy String
   
   latitude Float
   longitude Float
-  title String?
-  popup String?
-
-  user User @relation(fields: [createdBy], references: [id])
+  name String?
+  description String?
 }
