@@ -20,9 +20,17 @@ import express from "express";
 import cors from "cors";
 import { ErrorHandler, RedirectToPage } from "./middlewares";
 import { api } from "./api";
+import { DefaultEventsMap, Server } from "socket.io";
+import { db, PORT, ServerToClientEvents } from "./util";
+import { Point } from "./util/models";
 
 const app = express();
-const port = 1447;
+export const io = new Server<DefaultEventsMap, ServerToClientEvents>({
+  cors: {
+    origin: "*"
+  }
+});
+const port = PORT || 1447;
 
 app.use(express.json());
 app.use(cors());
@@ -32,4 +40,16 @@ api.use(ErrorHandler);
 
 app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);
+});
+
+io.listen(port + 1);
+
+io.on("connection", async socket => {
+  console.log(`${socket.id} connected`);
+  const points: Point[] = await db.point.findMany();
+  socket.emit("READY", points);
+
+  socket.on("disconnect", reason => {
+    console.log(`${socket.id} disconnected: ${reason}`);
+  });
 });

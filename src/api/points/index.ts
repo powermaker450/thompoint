@@ -22,6 +22,7 @@ import { VerifyJson } from "../../middlewares";
 import { Point } from "../../util/models";
 import { PointCreate } from "../../util/schema";
 import { pointId } from "./:pointId";
+import { io } from "../../main";
 
 const route = "/points";
 export const points = Router();
@@ -34,12 +35,14 @@ points.get(route, async (_, res) => {
 points.post(route, VerifyJson);
 points.post(route, async (req, res) => {
   const data = await PointCreate.validate(req.body); 
-
-  await db.point.create({ data });
+  const point: Point = await db.point.create({ data });
 
   res
     .status(204)
     .send();
+
+  io.emit("NEW_POINT", point);
+  console.log(`Sent point to socket: ${point}`);
 });
 
 points.use(route, pointId);

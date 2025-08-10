@@ -16,6 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./config";
-export * from "./db";
-export * from "./ServerToClientEvents";
+import { Point } from "./models";
+
+export interface ServerToClientEvents {
+  NEW_POINT: (point: Point) => void;
+  READY: (points: Point[]) => void;
+}
