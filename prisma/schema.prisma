@@ -25,6 +25,7 @@ model Point {
   
   latitude Float
   longitude Float
+  title String?
   popup String?
 
   user User @relation(fields: [createdBy], references: [id])
