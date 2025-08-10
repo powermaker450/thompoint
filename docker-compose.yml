@@ -1,0 +1,11 @@
+services:
+  thompoint:
+    build: .
+    container_name: thompoint
+    volumes:
+      - db:/app/prisma/persist
+    environment:
+      SECRET_KEY=
+
+volumes:
+  db:

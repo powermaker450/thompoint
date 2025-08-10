@@ -36,7 +36,7 @@ login.post(route, async (req, res) => {
     throw new UserNotExistsError();
   }
 
-  const passwordCorrect = await argon2.verify(password, user.password);
+  const passwordCorrect = await argon2.verify(user.password, password);
   if (!passwordCorrect) {
     throw new IncorrectPasswordError();
   }

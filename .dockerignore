@@ -1,0 +1,8 @@
+node_modules
+dist
+persist
+prisma/migrations
+prisma/persist
+README.md
+.env
+.git
