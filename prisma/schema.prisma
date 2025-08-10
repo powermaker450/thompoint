@@ -13,7 +13,7 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  username String
+  username String @unique
   password String
 
   points Point[]
@@ -22,12 +22,12 @@ model User {
 model Point {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
-  createdBy Int
+  createdBy String
   
   latitude Float
   longitude Float
   name String?
   description String?
 
-  user User @relation(fields: [createdBy], references: [id])
+  user User @relation(fields: [createdBy], references: [username])
 }
